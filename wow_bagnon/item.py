@@ -1,0 +1,30 @@
+import enum
+
+
+class ItemType(enum.Enum):
+    STANDARD = 0
+    QUIVER = 1
+    ENCHANTING = 2
+    ENGINEERING = 3
+    GEM = 4
+    HERB = 5
+    LEATHER_WORKING = 6
+    MINING = 7
+    SOUL = 8
+    AMMO_POUCH = 9
+
+
+class Item:
+    def __init__(self, id: int, stack: int, max_stack: int, type: ItemType):
+        self.id = id
+        self.stack = stack
+        self.max_stack = max_stack
+        self.type = type
+
+    def __repr__(self):
+        return '"bag": {{bag}}, "slot": {{slot}}, "id": {}, "stack": {}, "max_stack": {}, "type": {}'.format(
+            self.id, self.stack, self.max_stack, self.type.name
+        )
+
+    def __gt__(self, other):
+        return self.id.__gt__(other.id)

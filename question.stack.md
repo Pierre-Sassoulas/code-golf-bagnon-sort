@@ -11,7 +11,7 @@ algorithm, the man is busy.
 
 - In WOW, there are up to 5 bags with each a number of slots. From 20 slots (just the
   starting bag) to 164 slots (20 + 4 _ 36 slot bags). There is also a 98 slots bag (the
-  reagent bank), and the bank itself which has between 28 (starting bank space) and a
+  reagent bank), and the bank itself which has between 28 (starting bank space), and a
   maximum of 280 slots (28 + 7 _ 36 slots bags).
 - Bags and items have types: There are special bags that can only contain one type of
   object. For example, quivers can only contain arrows, but arrows can be stored
@@ -27,7 +27,7 @@ In order to sort the bag, you need to move the item. A move is done by calling t
 API:
 
 - Moving something can fail if the slot does not accept this type of object.
-- Moving something to a slot where another item exists invert item position and it can
+- Moving something to a slot where another item exists invert item position, and it can
   fail if one of the slots does not accept these types of items.
 - Moving an item that can be stacked from a slot A to slot B where the same object
   exists, makes the stack in slot B bigger, and every item that overflow goes into slot
@@ -37,20 +37,21 @@ Moving an item requires a server call and is one of the two limiting factors. Le
 this `serverDelayTime`. If you try to move an item again faster than the
 `serverDelayTime` it will fail.
 
-But the sorting can be parallelized: every `serverDelayTime` you can exchange the
-position of multiple items as long as no action occurred on any of them. Although some
-clients freeze when you move too many objects this way at the same time. This can vary
-between clients with their PC performances. Let's call this second limiting factor
+The sorting can be parallelized: every `serverDelayTime` you can exchange the position
+of multiple items as long as no action occurred on any of them. Although some clients
+freeze when you move too many objects this way at the same time. This can vary between
+clients with their PC performances. Let's call this second limiting factor
 `maxConcurrentMove` (Value is from 1 for two objects moved at a time to 140 for every
 object in the biggest bank moved at the same time).
 
-Input: List of items and bags
+Input: List of items with their id, their bag, slot, the number of item in the stack and
+the type. Bags with their number, the type they accept and their size.
 
 ```python
 items = [
     {"id": 1, "bag": 1, "slot": 4, "stack": 20, "type": 0},
     {"id": 5, "bag": 1, "slot": 5, "stack": 200, "itemCount": 187, "type": 3},
-    {"id": 5, "bag": 1, "slot": 5, "stack": 200, "itemCount": 25, "type": 3},
+    {"id": 5, "bag": 1, "slot": 15, "stack": 200, "itemCount": 25, "type": 3},
 ]
 bags = [
     {"bag": 0, "types": [0, 1, 2, 3], "size": 20},
@@ -61,6 +62,19 @@ bags = [
 ```
 
 Output: List of tick calls. Each tick is a list of move calls.
+
+```python
+[
+    [
+        "b1 s4 => b0 s0",
+        "b1 s5 => b2 s0",
+        "b1 s15 => b2 s0", # This stack overflow, and 12 items will stay in b1 s15
+    ],
+    [
+        "b1 s15 => b2 s1",
+    ],
+]
+```
 
 Applying all the moves must return sorted bags. Ie: item's id are from smallest to
 biggest.
