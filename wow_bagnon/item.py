@@ -24,6 +24,14 @@ class Item:
             type = ItemType(type)
         self.type = type
 
+    def __eq__(self, other):
+        return (
+            self.id == other.id
+            and self.stack == other.stack
+            and self.max_stack == other.max_stack
+            and self.type == other.type
+        )
+
     def __repr__(self):
         return '"bag": {{bag}}, "slot": {{slot}}, "id": {}, "stack": {}, "max_stack": {}, "type": {}'.format(
             self.id, self.stack, self.max_stack, self.type.name

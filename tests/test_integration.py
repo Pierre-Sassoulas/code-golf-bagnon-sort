@@ -1,7 +1,10 @@
-from wow_bagnon.basic_sorter import BasicSorter
+import pytest
+
+from wow_bagnon.basic_sorter import MoveChecker
 
 
-def test_bags():
+@pytest.fixture
+def checker():
     bags = [
         {
             "id": 1,
@@ -18,9 +21,24 @@ def test_bags():
         {"id": 2, "size": 6, "type": 8, "items": []},
         {"id": 3, "size": 6, "type": 2, "items": []},
     ]
-    sorter = BasicSorter(bags=bags)  # type: ignore
+    return MoveChecker(bags=bags)  # type: ignore
+
+
+def test_one_reasonable_move(checker, dust):
     ticks = [
-        [],
-        [],
+        [{"bo": 1, "so": 2, "bd": 3, "sd": 3}],
     ]
-    sorter.apply_move(ticks)
+    checker.apply_move(ticks)
+    moved_dust = checker.bags[2].pick(slot=3)
+    assert moved_dust == dust
+
+
+def test_one_impossible_move(checker, dust):
+    ticks = [
+        [{"bo": 1, "so": 3, "bd": 3, "sd": 3}],
+    ]
+    with pytest.raises(
+        RuntimeError,
+        match="item with type ItemType.SOUL in bag that can handle type ENCHANTING",
+    ):
+        checker.apply_move(ticks)

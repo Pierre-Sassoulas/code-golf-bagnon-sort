@@ -21,13 +21,13 @@ class DictBag(TypedDict):
 
 
 class DictMove(TypedDict):
-    bag_origin: int
-    slot_origin: int
-    bag_destination: int
-    slot_destination: int
+    bo: int
+    so: int
+    bd: int
+    sd: int
 
 
-class BasicSorter:
+class MoveChecker:
     def __init__(self, bags: List[DictBag]):
         self.bags: List[Bag] = []
         for bag in bags:
@@ -45,8 +45,6 @@ class BasicSorter:
     def apply_move(self, ticks: List[List[DictMove]]):
         for moves in ticks:
             for move in moves:
-                item = self.bags[move["bag_origin"]].pick(move["slot_origin"])
-                self.bags[move["bag_destination"]].put(
-                    item, slot=move["slot_destination"]
-                )
+                item = self.bags[move["bo"] - 1].pick(move["so"])
+                self.bags[move["bd"] - 1].put(item, slot=move["sd"])
         print(f"Final result: {self.bags}")
