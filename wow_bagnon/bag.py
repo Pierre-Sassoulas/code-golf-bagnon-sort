@@ -1,13 +1,17 @@
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from wow_bagnon.item import Item, ItemType
 
 
 class Bag:
-    def __init__(self, id: int, size: int, item_type: ItemType = ItemType.STANDARD):
+    def __init__(
+        self, id: int, size: int, item_type: Union[ItemType, int] = ItemType.STANDARD
+    ):
         self.id: int = id
         self.size: int = size
         self.slots: List[Optional[Item]] = [None] * size
+        if isinstance(item_type, int):
+            item_type = ItemType(item_type)
         self.item_type: ItemType = item_type
 
     def __str__(self):
@@ -58,7 +62,7 @@ class Bag:
             return existing_item
         if self.item_type != ItemType.STANDARD and item.type != self.item_type:
             raise RuntimeError(
-                f"Tried to put an item with type {item.type} in bag that can handle type {self.item_type}"
+                f"Tried to put an item with type {item.type} in bag that can handle type {self.item_type.name}"
             )
         try:
             self.slots[slot] = item

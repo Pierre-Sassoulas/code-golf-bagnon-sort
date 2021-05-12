@@ -1,4 +1,5 @@
 import enum
+from typing import Union
 
 
 class ItemType(enum.Enum):
@@ -15,10 +16,12 @@ class ItemType(enum.Enum):
 
 
 class Item:
-    def __init__(self, id: int, stack: int, max_stack: int, type: ItemType):
+    def __init__(self, id: int, stack: int, max_stack: int, type: Union[ItemType, int]):
         self.id = id
         self.stack = stack
         self.max_stack = max_stack
+        if isinstance(type, int):
+            type = ItemType(type)
         self.type = type
 
     def __repr__(self):
