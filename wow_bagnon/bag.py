@@ -34,7 +34,7 @@ class Bag:
     def pick(self, slot: int) -> Optional[Item]:
         try:
             item = self.slots[slot]
-        except KeyError:
+        except IndexError:
             raise RuntimeError(
                 f"Tried to pick an item from slot {slot} that does not exist in {self}"
             )

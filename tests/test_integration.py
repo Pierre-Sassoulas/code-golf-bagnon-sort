@@ -33,7 +33,7 @@ def test_one_reasonable_move(checker, dust):
     assert moved_dust == dust
 
 
-def test_one_impossible_move(checker, dust):
+def test_one_impossible_move(checker):
     ticks = [
         [{"bo": 1, "so": 3, "bd": 3, "sd": 3}],
     ]
@@ -41,4 +41,14 @@ def test_one_impossible_move(checker, dust):
         RuntimeError,
         match="item with type ItemType.SOUL in bag that can handle type ENCHANTING",
     ):
+        checker.apply_move(ticks)
+    ticks = [
+        [{"bo": 1, "so": 3, "bd": 3, "sd": 6}],
+    ]
+    with pytest.raises(RuntimeError, match="slot 6 that does not exist in Bag 3"):
+        checker.apply_move(ticks)
+    ticks = [
+        [{"bo": 1, "so": 3, "bd": 3, "sd": -7}],
+    ]
+    with pytest.raises(RuntimeError, match="slot -7 that does not exist in Bag 3"):
         checker.apply_move(ticks)
