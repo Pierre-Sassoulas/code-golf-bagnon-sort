@@ -27,7 +27,17 @@ class DictMove(TypedDict):
     sd: int
 
 
+class WrongMove(Exception):
+    """Raised when a wrong move was detected by the checker."""
+
+
 class MoveChecker:
+    tick_descr = {
+        0: "first",
+        1: "second",
+        2: "third",
+    }
+
     def __init__(self, bags: List[DictBag]):
         self.bags: List[Bag] = []
         for bag in bags:
@@ -43,8 +53,21 @@ class MoveChecker:
             self.bags.append(current_bag)
 
     def apply_move(self, ticks: List[List[DictMove]]):
-        for moves in ticks:
-            for move in moves:
-                item = self.bags[move["bo"] - 1].pick(move["so"])
-                self.bags[move["bd"] - 1].put(item, slot=move["sd"])
-        print(f"Final result: {self.bags}")
+        problems = []
+        for i, moves in enumerate(ticks):
+            print(f"Bag state: {self.bags}")
+            tick_desc = self.tick_descr.get(i, f"{i + 1}th")
+            for j, move in enumerate(moves):
+                try:
+                    item = self.bags[move["bo"] - 1].pick(move["so"])
+                    self.bags[move["bd"] - 1].put(item, slot=move["sd"])
+                except RuntimeError as e:
+                    move_desr = self.tick_descr.get(j, f"{j + 1}th")
+                    problems.append(f"In the {move_desr} move ({move}) : {e}")
+            if problems:
+                plural = "s" if len(problems) > 1 else ""
+                raise WrongMove(
+                    f"Wrong move{plural} in the {tick_desc} tick:\n"
+                    + "\n".join(problems)
+                )
+        print(f"Final result: {self.bags}: {problems}")
