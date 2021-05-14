@@ -1,14 +1,18 @@
 # See https://github.com/PyCQA/pylint/blob/master/pylintrc for possible options
 
 [MASTER]
-extension-pkg-whitelist=lxml,wand
 max-line-length=120
 disable=
-    C0111, # missing-docstring
-    C0330, # Wrong hanging indentation
-    E0401, # Unable to import
-    C0412, wrong-import-order # Handled by isort (and incompatible before 2.4 see : https://github.com/PyCQA/pylint/issues/2806)
+    missing-docstring, # Sometime it is self explanatory
+    wrong-import-order, # Handled by isort
+    ungrouped-imports, # Handled by isort
     too-few-public-methods, # Lot of classes can validly have only one method
+    too-many-branches, # We have flake8 C901 that is better
+    redefined-outer-name, # Heavily used by pytest fixtures
+
+enable=
+    useless-suppression,
+    use-symbolic-message-instead,
 
 [BASIC]
 
@@ -20,3 +24,13 @@ good-names=i,j,k,e,f,id,_,x,y,z
 # detects that we inherit from unittest.TestCase
 # But that's not always possible to detect.
 method-rgx=[a-z_][a-z0-9_]{2,30}$|setUp(Class)?|tearDown(Class)?
+
+[LOGGING]
+logging-format-style=old
+
+[SIMILARITIES]
+# Minimum lines number of a similarity.
+min-similarity-lines=4
+
+# Ignore imports when computing similarities.
+ignore-imports=yes
