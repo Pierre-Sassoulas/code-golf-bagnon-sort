@@ -1,6 +1,7 @@
-https://codegolf.meta.stackexchange.com/questions/2140/sandbox-for-proposed-challenges?answertab=active#tab-top
+[comment]: <> (
+https://codegolf.meta.stackexchange.com/questions/2140/sandbox-for-proposed-challenges?answertab=active#tab-top)
 
-# WOW, sort this bag, this is a paralleled mess!
+# WOW, sort this bag, this is a paralleled mess !
 
 Bagnon is an add-on by Jaliborc for World of Warcraft (WOW), which has a sorting feature
 included. The goal of this challenge is to make this sorting faster. The winner gets to
@@ -10,9 +11,9 @@ This would affect a lot of WOW players. Please don't flood Jaliborc with an infe
 algorithm, the man is busy.
 
 - In WOW, there are up to 5 bags with each a number of slots. From 20 slots (just the
-  starting bag) to 164 slots (20 + 4 _ 36 slot bags). There is also a 98 slots bag (the
+  starting bag) to 164 slots (20 + 4 = 36 slot bags). There is also a 98 slots bag (the
   reagent bank), and the bank itself which has between 28 (starting bank space), and a
-  maximum of 280 slots (28 + 7 _ 36 slots bags).
+  maximum of 280 slots (28 + 7 = 36 slots bags).
 - Bags and items have types: There are special bags that can only contain one type of
   object. For example, quivers can only contain arrows, but arrows can be stored
   everywhere.
@@ -68,7 +69,7 @@ Output: List of tick calls. Each tick is a list of move calls.
     [
         "b1 s4 => b0 s0",
         "b1 s5 => b2 s0",
-        "b1 s15 => b2 s0", # This stack overflow, and 12 items will stay in b1 s15
+        "b1 s15 => b2 s0",  # This stack overflow, and 12 items will stay in b1 s15
     ],
     [
         "b1 s15 => b2 s1",
