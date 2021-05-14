@@ -4,6 +4,7 @@ from wow_bagnon.item import Item, ItemType
 
 
 class Bag:
+    # pylint: disable=redefined-builtin
     def __init__(
         self, id: int, size: int, item_type: Union[ItemType, int] = ItemType.STANDARD
     ):
@@ -34,10 +35,10 @@ class Bag:
     def pick(self, slot: int) -> Optional[Item]:
         try:
             item = self.slots[slot]
-        except IndexError:
+        except IndexError as e:
             raise RuntimeError(
                 f"Tried to pick an item from slot {slot} that does not exist in {self}"
-            )
+            ) from e
         self.slots[slot] = None
         return item
 
@@ -66,10 +67,10 @@ class Bag:
             )
         try:
             self.slots[slot] = item
-        except KeyError:
+        except KeyError as e:
             raise RuntimeError(
                 f"Tried to put an item in slot {slot} that does not exist in {self}"
-            )
+            ) from e
         if existing_item is None:
             return None
         if item.id != existing_item.id or item.max_stack == 1:

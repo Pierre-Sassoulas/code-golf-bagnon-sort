@@ -16,6 +16,7 @@ class ItemType(enum.Enum):
 
 
 class Item:
+    # pylint: disable=redefined-builtin
     def __init__(self, id: int, stack: int, max_stack: int, type: Union[ItemType, int]):
         self.id = id
         self.stack = stack

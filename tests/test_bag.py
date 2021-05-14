@@ -7,7 +7,7 @@ def test_bags(bags):
         '5: "bag": 1, "slot": 5, "id": 1, "stack": 1, "max_stack": 1, "type": STANDARD',
         '9: "bag": 1, "slot": 9, "id": 1, "stack": 1, "max_stack": 1, "type": STANDARD',
     ]
-    assert all([x in str(bags[0]) for x in msgs])
+    assert all(x in str(bags[0]) for x in msgs)
 
 
 def test_bag(standard_bag, stacked_soul):
