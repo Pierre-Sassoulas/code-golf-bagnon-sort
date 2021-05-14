@@ -1,6 +1,6 @@
 from typing import List, Optional, Union
 
-from wow_bagnon.item import Item, ItemType
+from code_golf_bagnon_sort.item import Item, ItemType
 
 
 class Bag:

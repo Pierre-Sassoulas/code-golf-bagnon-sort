@@ -1,7 +1,7 @@
 from typing import List, TypedDict
 
-from wow_bagnon.bag import Bag
-from wow_bagnon.item import Item, ItemType
+from code_golf_bagnon_sort.bag import Bag
+from code_golf_bagnon_sort.item import Item, ItemType
 
 
 class DictItem(TypedDict):

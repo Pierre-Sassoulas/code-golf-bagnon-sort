@@ -1,6 +1,6 @@
 import pytest
 
-from wow_bagnon.basic_sorter import MoveChecker
+from code_golf_bagnon_sort.basic_sorter import MoveChecker
 
 
 @pytest.fixture
