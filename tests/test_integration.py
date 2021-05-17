@@ -56,30 +56,22 @@ def test_one_impossible_move(checker):
         checker.apply_ticks(ticks)
 
 
-def test_full_sort_two_tics(checker):
-
+def test_full_sort_two_tics(checker, capsys):
     ticks = [
-        # bags = [
-        #     {
-        #         "id": 1,
-        #         "size": 20,
-        #         "type": 0,
-        #         "items": [
-        #             {"bag": 1, "slot": 1, "id": 2, "stack": 3,
-        #               "max_stack": 10, "type": 8},
-        #             {"bag": 1, "slot": 2, "id": 3, "stack": 15,
-        #               "max_stack": 20, "type": 2},
-        #             {"bag": 1, "slot": 3, "id": 2, "stack": 8,
-        #               "max_stack": 10, "type": 8},
-        #             {"bag": 1, "slot": 5, "id": 1, "stack": 1,
-        #               "max_stack": 1, "type": 0},
-        #             {"bag": 1, "slot": 9, "id": 1, "stack": 1,
-        #               "max_stack": 1, "type": 0},
-        #         ],
-        #     },
-        #     {"id": 2, "size": 6, "type": 8, "items": []},
-        #     {"id": 3, "size": 6, "type": 2, "items": []},
-        # ]
+        # {
+        #     "id": 1,
+        #     "size": 20,
+        #     "type": 0,
+        #     "items": [
+        #         {"bag": 1, "slot": 1, "id": 2, "stack": 3, "max_stack": 10, "type": 8},
+        #         {"bag": 1, "slot": 2, "id": 3, "stack": 15, "max_stack": 20, "type": 2},
+        #         {"bag": 1, "slot": 3, "id": 2, "stack": 8, "max_stack": 10, "type": 8},
+        #         {"bag": 1, "slot": 5, "id": 1, "stack": 1, "max_stack": 1, "type": 0},
+        #         {"bag": 1, "slot": 9, "id": 1, "stack": 1, "max_stack": 1, "type": 0},
+        #     ],
+        # },
+        # {"id": 2, "size": 6, "type": 8, "items": []},
+        # {"id": 3, "size": 6, "type": 2, "items": []},
         [
             {"bo": 1, "so": 1, "bd": 2, "sd": 1},
             {"bo": 1, "so": 2, "bd": 3, "sd": 1},
@@ -87,11 +79,46 @@ def test_full_sort_two_tics(checker):
             {"bo": 1, "so": 5, "bd": 1, "sd": 1},
             {"bo": 1, "so": 9, "bd": 1, "sd": 2},
         ],
+        # {
+        #     "id": 1,
+        #     "size": 20,
+        #     "type": 0,
+        #     "items": [
+        #         {"bag": 1, "slot": 1, "id": 1, "stack": 1, "max_stack": 1, "type": 0},
+        #         {"bag": 1, "slot": 2, "id": 1, "stack": 1, "max_stack": 1, "type": 0},
+        #     ],
+        # },
+        # {
+        #     "id": 2,
+        #     "size": 6,
+        #     "type": 8,
+        #     "items": [
+        #         {"bag": 2, "slot": 1, "id": 2, "stack": 3, "max_stack": 10, "type": 8},
+        #         {"bag": 2, "slot": 2, "id": 2, "stack": 8, "max_stack": 10, "type": 8},
+        #     ],
+        # },
+        # {
+        #     "id": 3,
+        #     "size": 6,
+        #     "type": 2,
+        #     "items": [
+        #         {"bag": 3, "slot": 1, "id": 3, "stack": 15, "max_stack": 20, "type": 2}
+        #     ],
+        # },
         [
-            {"bo": 1, "so": 3, "bd": 3, "sd": 3},
-            {"bo": 1, "so": 3, "bd": 3, "sd": 3},
-            {"bo": 1, "so": 3, "bd": 3, "sd": 3},
-            {"bo": 1, "so": 3, "bd": 3, "sd": 3},
+            {"bo": 2, "so": 2, "bd": 2, "sd": 1},
         ],
     ]
     checker.apply_ticks(ticks)
+    out, err = capsys.readouterr()
+    assert not err
+    assert "useless" not in out
+    assert checker.bags[1] == {
+        "id": 2,
+        "size": 6,
+        "type": 8,
+        "items": [
+            {"bag": 2, "slot": 1, "id": 2, "stack": 10, "max_stack": 10, "type": 8},
+            {"bag": 2, "slot": 2, "id": 2, "stack": 1, "max_stack": 10, "type": 8},
+        ],
+    }

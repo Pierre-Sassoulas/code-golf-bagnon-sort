@@ -47,6 +47,7 @@ class MoveChecker:
 
     def __init__(self, bags: list[DictBag]):
         self.bags: list[Bag] = []
+        self.moved_during_this_tick = []
         for bag in bags:
             current_bag = Bag(id=bag["id"], item_type=bag["type"], size=bag["size"])
             for item in bag["items"]:
@@ -58,16 +59,18 @@ class MoveChecker:
                 )
                 current_bag.put(item=current_item, slot=item["slot"])
             self.bags.append(current_bag)
+        self.warnings: list[str] = []
 
     def apply_ticks(self, ticks: list[list[DictMove]]):
         problems: list[str] = []
         for i, moves in enumerate(ticks):
             self.apply_moves(i, moves, problems)
-        print(f"Final result: {self.bags}: {problems}")
+        print(f"Final result: {self.bags}\nWarning:\n" + "\n".join(self.warnings))
 
     def apply_moves(self, i, moves, problems):
         print(f"Bag state: {self.bags}")
         tick_desc = self.tick_descr.get(i, f"{i + 1}th")
+        self.moved_during_this_tick = {}
         for j, move in enumerate(moves):
             move_desr = self.tick_descr.get(j, f"{j + 1}th")
             try:
@@ -75,7 +78,7 @@ class MoveChecker:
             except RuntimeError as e:
                 problems.append(f"In the {move_desr} move ({move}) : {e}")
             except RuntimeWarning as e:
-                problems.append(f"In the {move_desr} move ({move}) : {e}")
+                self.warnings.append(f"In the {move_desr} move ({move}) : {e}")
         if problems:
             plural = "s" if len(problems) > 1 else ""
             raise WrongMove(
