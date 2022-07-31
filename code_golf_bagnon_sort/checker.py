@@ -71,7 +71,7 @@ class MoveChecker:
         for j, move in enumerate(moves):
             move_desr = self.tick_descr.get(j, f"{j + 1}th")
             try:
-                self.apply_move(move)
+                self.apply_move(*self.__get_semantic_move_from_dict(move))
             except RuntimeError as e:
                 problems.append(f"In the {move_desr} move ({move}) : {e}")
             except RuntimeWarning as e:
@@ -82,11 +82,13 @@ class MoveChecker:
                 f"Wrong move{plural} in the {tick_desc} tick:\n" + "\n".join(problems)
             )
 
-    def apply_move(self, move):
-        origin_bag = self.bags[move["bo"] - 1]
-        origin_slot = move["so"]
-        destination_bag = self.bags[move["bd"] - 1]
-        destination_slot = move["sd"]
+    @staticmethod
+    def apply_move(
+        origin_bag: Bag,
+        origin_slot: int,
+        destination_bag: Bag,
+        destination_slot: int,
+    ):
         item = origin_bag.pick(origin_slot)
         destination_bag.put(item, slot=destination_slot)
         if (
@@ -94,3 +96,10 @@ class MoveChecker:
             and destination_bag.slots[destination_slot] is None
         ):
             raise RuntimeWarning("Move was useless (moved nothing)")
+
+    def __get_semantic_move_from_dict(self, move) -> tuple[Bag, int, Bag, int]:
+        origin_bag = self.bags[move["bo"] - 1]
+        origin_slot = move["so"]
+        destination_bag = self.bags[move["bd"] - 1]
+        destination_slot = move["sd"]
+        return origin_bag, origin_slot, destination_bag, destination_slot
