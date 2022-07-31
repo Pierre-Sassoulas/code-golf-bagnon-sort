@@ -34,8 +34,9 @@ class Item:
         )
 
     def __repr__(self):
-        return '"bag": {{bag}}, "slot": {{slot}}, "id": {}, "stack": {}, "max_stack": {}, "type": {}'.format(
-            self.id, self.stack, self.max_stack, self.type.name
+        return (
+            f'"bag": {{bag}}, "slot": {{slot}}, "id": {self.id}, "stack": {self.stack},'
+            f' "max_stack": {self.max_stack}, "type": {self.type.name}'
         )
 
     def __gt__(self, other):

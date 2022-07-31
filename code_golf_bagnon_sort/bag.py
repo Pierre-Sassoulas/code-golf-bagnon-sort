@@ -29,7 +29,7 @@ class Bag:
         items = []
         for i, slot in enumerate(self.slots):
             if slot is not None:
-                items.append("{%s}" % slot.__repr__().format(bag=self.id, slot=i))
+                items.append(f"{{{slot.__repr__().format(bag=self.id, slot=i)}}}")
         return repr + '"items": [' + ", ".join(items) + "]}"
 
     def pick(self, slot: int) -> Optional[Item]:
