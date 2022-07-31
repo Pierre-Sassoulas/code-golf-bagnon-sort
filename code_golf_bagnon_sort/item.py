@@ -1,5 +1,6 @@
+from __future__ import annotations
+
 import enum
-from typing import Union
 
 
 class ItemType(enum.Enum):
@@ -17,7 +18,7 @@ class ItemType(enum.Enum):
 
 class Item:
     # pylint: disable=redefined-builtin
-    def __init__(self, id: int, stack: int, max_stack: int, type: Union[ItemType, int]):
+    def __init__(self, id: int, stack: int, max_stack: int, type: ItemType | int):
         self.id = id
         self.stack = stack
         self.max_stack = max_stack

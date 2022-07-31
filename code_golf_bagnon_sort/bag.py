@@ -1,4 +1,4 @@
-from typing import List, Optional, Union
+from __future__ import annotations
 
 from code_golf_bagnon_sort.item import Item, ItemType
 
@@ -6,11 +6,11 @@ from code_golf_bagnon_sort.item import Item, ItemType
 class Bag:
     # pylint: disable=redefined-builtin
     def __init__(
-        self, id: int, size: int, item_type: Union[ItemType, int] = ItemType.STANDARD
+        self, id: int, size: int, item_type: ItemType | int = ItemType.STANDARD
     ):
         self.id: int = id
         self.size: int = size
-        self.slots: List[Optional[Item]] = [None] * size
+        self.slots: list[Item | None] = [None] * size
         if isinstance(item_type, int):
             item_type = ItemType(item_type)
         self.item_type: ItemType = item_type
@@ -32,7 +32,7 @@ class Bag:
                 items.append(f"{{{slot.__repr__().format(bag=self.id, slot=i)}}}")
         return repr + '"items": [' + ", ".join(items) + "]}"
 
-    def pick(self, slot: int) -> Optional[Item]:
+    def pick(self, slot: int) -> Item | None:
         try:
             item = self.slots[slot]
         except IndexError as e:
@@ -42,7 +42,7 @@ class Bag:
         self.slots[slot] = None
         return item
 
-    def stack(self, slot, item: Item) -> Optional[Item]:
+    def stack(self, slot, item: Item) -> Item | None:
         other = self.slots[slot]
         assert_msg = f"Trying to stack {other} and {item}, that ain't gonna work"
         assert other.id == item.id, assert_msg
@@ -57,7 +57,7 @@ class Bag:
             type=other.type,
         )
 
-    def put(self, item: Optional[Item], slot: int) -> Optional[Item]:
+    def put(self, item: Item | None, slot: int) -> Item | None:
         existing_item = self.pick(slot)
         if item is None:
             return existing_item
