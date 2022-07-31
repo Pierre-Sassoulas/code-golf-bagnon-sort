@@ -63,7 +63,8 @@ class Bag:
             return existing_item
         if self.item_type not in (ItemType.STANDARD, item.type):
             raise RuntimeError(
-                f"Tried to put an item with type {item.type} in bag that can handle type {self.item_type.name}"
+                f"Tried to put an item with type {item.type} in bag that can handle"
+                f" type {self.item_type.name}"
             )
         try:
             self.slots[slot] = item
