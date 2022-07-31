@@ -1,4 +1,6 @@
-from typing import List, TypedDict
+from __future__ import annotations
+
+from typing import TypedDict
 
 from code_golf_bagnon_sort.bag import Bag
 from code_golf_bagnon_sort.item import Item, ItemType
@@ -17,7 +19,7 @@ class DictBag(TypedDict):
     id: int
     type: ItemType
     size: int
-    items: List[DictItem]
+    items: list[DictItem]
 
 
 class DictMove(TypedDict):
@@ -38,8 +40,8 @@ class MoveChecker:
         2: "third",
     }
 
-    def __init__(self, bags: List[DictBag]):
-        self.bags: List[Bag] = []
+    def __init__(self, bags: list[DictBag]):
+        self.bags: list[Bag] = []
         for bag in bags:
             current_bag = Bag(id=bag["id"], item_type=bag["type"], size=bag["size"])
             for item in bag["items"]:
@@ -52,7 +54,7 @@ class MoveChecker:
                 current_bag.put(item=current_item, slot=item["slot"])
             self.bags.append(current_bag)
 
-    def apply_move(self, ticks: List[List[DictMove]]):
+    def apply_move(self, ticks: list[list[DictMove]]):
         problems = []
         for i, moves in enumerate(ticks):
             print(f"Bag state: {self.bags}")

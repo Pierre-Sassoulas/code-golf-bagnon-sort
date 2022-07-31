@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import pytest
 
 from code_golf_bagnon_sort.bag import Bag

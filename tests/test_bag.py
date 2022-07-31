@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+
 def test_bags(bags):
     msgs = [
         "Bag 1 (ItemType.STANDARD - 20)",
