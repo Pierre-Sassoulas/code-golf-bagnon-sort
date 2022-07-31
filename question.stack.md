@@ -81,6 +81,6 @@ Applying all the moves must return sorted bags. Ie: item's id are from smallest 
 biggest.
 
 This is a real-world algorithm, so of course, the theoretically faster algorithm wins !
-The objective is to sort the bag in the less possible tick of `serverDelayTime` while
+The objective is to sort the bag in the less possible ticks of `serverDelayTime` while
 respecting the `maxConcurrentMove` limit and without moving anything to a forbidden bag.
 For the same number of ticks, the winner is the one with the least move call.
