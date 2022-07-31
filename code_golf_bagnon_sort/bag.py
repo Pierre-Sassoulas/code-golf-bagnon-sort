@@ -61,7 +61,7 @@ class Bag:
         existing_item = self.pick(slot)
         if item is None:
             return existing_item
-        if self.item_type != ItemType.STANDARD and item.type != self.item_type:
+        if self.item_type not in (ItemType.STANDARD, item.type):
             raise RuntimeError(
                 f"Tried to put an item with type {item.type} in bag that can handle type {self.item_type.name}"
             )
