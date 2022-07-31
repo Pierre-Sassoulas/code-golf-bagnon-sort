@@ -1,7 +1,7 @@
 # See https://github.com/PyCQA/pylint/blob/master/pylintrc for possible options
 
 [MASTER]
-max-line-length=120
+max-line-length=88
 disable=
     missing-docstring, # Sometime it is self explanatory
     wrong-import-order, # Handled by isort
