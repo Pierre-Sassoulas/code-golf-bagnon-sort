@@ -1,6 +1,3 @@
-[comment]: <> (
-https://codegolf.meta.stackexchange.com/questions/2140/sandbox-for-proposed-challenges?answertab=active#tab-top)
-
 # WOW, sort this bag, this is a paralleled mess !
 
 Bagnon is an add-on by Jaliborc for World of Warcraft (WOW), which has a sorting feature
