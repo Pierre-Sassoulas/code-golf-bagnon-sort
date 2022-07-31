@@ -30,7 +30,7 @@ def test_one_reasonable_move(checker, dust):
     ticks = [
         [{"bo": 1, "so": 2, "bd": 3, "sd": 3}],
     ]
-    checker.apply_move(ticks)
+    checker.apply_ticks(ticks)
     moved_dust = checker.bags[2].pick(slot=3)
     assert moved_dust == dust
 
@@ -43,17 +43,17 @@ def test_one_impossible_move(checker):
         WrongMove,
         match="item with type ItemType.SOUL in bag that can handle type ENCHANTING",
     ):
-        checker.apply_move(ticks)
+        checker.apply_ticks(ticks)
     ticks = [
         [{"bo": 1, "so": 3, "bd": 3, "sd": 6}],
     ]
     with pytest.raises(WrongMove, match="slot 6 that does not exist in Bag 3"):
-        checker.apply_move(ticks)
+        checker.apply_ticks(ticks)
     ticks = [
         [{"bo": 1, "so": 3, "bd": 3, "sd": -7}],
     ]
     with pytest.raises(WrongMove, match="slot -7 that does not exist in Bag 3"):
-        checker.apply_move(ticks)
+        checker.apply_ticks(ticks)
 
 
 def test_full_sort_two_tics(checker):
@@ -94,4 +94,4 @@ def test_full_sort_two_tics(checker):
             {"bo": 1, "so": 3, "bd": 3, "sd": 3},
         ],
     ]
-    checker.apply_move(ticks)
+    checker.apply_ticks(ticks)

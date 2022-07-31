@@ -59,22 +59,38 @@ class MoveChecker:
                 current_bag.put(item=current_item, slot=item["slot"])
             self.bags.append(current_bag)
 
-    def apply_move(self, ticks: list[list[DictMove]]):
-        problems = []
+    def apply_ticks(self, ticks: list[list[DictMove]]):
+        problems: list[str] = []
         for i, moves in enumerate(ticks):
-            print(f"Bag state: {self.bags}")
-            tick_desc = self.tick_descr.get(i, f"{i + 1}th")
-            for j, move in enumerate(moves):
-                try:
-                    item = self.bags[move["bo"] - 1].pick(move["so"])
-                    self.bags[move["bd"] - 1].put(item, slot=move["sd"])
-                except RuntimeError as e:
-                    move_desr = self.tick_descr.get(j, f"{j + 1}th")
-                    problems.append(f"In the {move_desr} move ({move}) : {e}")
-            if problems:
-                plural = "s" if len(problems) > 1 else ""
-                raise WrongMove(
-                    f"Wrong move{plural} in the {tick_desc} tick:\n"
-                    + "\n".join(problems)
-                )
+            self.apply_moves(i, moves, problems)
         print(f"Final result: {self.bags}: {problems}")
+
+    def apply_moves(self, i, moves, problems):
+        print(f"Bag state: {self.bags}")
+        tick_desc = self.tick_descr.get(i, f"{i + 1}th")
+        for j, move in enumerate(moves):
+            move_desr = self.tick_descr.get(j, f"{j + 1}th")
+            try:
+                self.apply_move(move)
+            except RuntimeError as e:
+                problems.append(f"In the {move_desr} move ({move}) : {e}")
+            except RuntimeWarning as e:
+                problems.append(f"In the {move_desr} move ({move}) : {e}")
+        if problems:
+            plural = "s" if len(problems) > 1 else ""
+            raise WrongMove(
+                f"Wrong move{plural} in the {tick_desc} tick:\n" + "\n".join(problems)
+            )
+
+    def apply_move(self, move):
+        origin_bag = self.bags[move["bo"] - 1]
+        origin_slot = move["so"]
+        destination_bag = self.bags[move["bd"] - 1]
+        destination_slot = move["sd"]
+        item = origin_bag.pick(origin_slot)
+        destination_bag.put(item, slot=destination_slot)
+        if (
+            origin_bag.slots[origin_slot] is None
+            and destination_bag.slots[destination_slot] is None
+        ):
+            raise RuntimeWarning("Move was useless (moved nothing)")
