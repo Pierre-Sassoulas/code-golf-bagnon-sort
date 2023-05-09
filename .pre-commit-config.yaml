@@ -1,3 +1,7 @@
+ci:
+  skip: [pylint]
+
+
 repos:
   - repo: https://github.com/PyCQA/autoflake
     rev: v2.1.1
