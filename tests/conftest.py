@@ -42,5 +42,4 @@ def enchanting_bag():
 
 @pytest.fixture
 def bags(standard_bag, soul_bag, enchanting_bag):
-
     return [standard_bag, soul_bag, enchanting_bag]

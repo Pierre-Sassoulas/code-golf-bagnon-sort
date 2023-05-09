@@ -1,6 +1,6 @@
 [flake8]
 ignore =
-    E203, W503, E231 # Incompatible with black
+    E203, W503, E231
 
 max-line-length=123
 

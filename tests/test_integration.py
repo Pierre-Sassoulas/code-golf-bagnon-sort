@@ -57,7 +57,6 @@ def test_one_impossible_move(checker):
 
 
 def test_full_sort_two_tics(checker):
-
     ticks = [
         # bags = [
         #     {
